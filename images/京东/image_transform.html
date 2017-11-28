@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<title>京东首页图片轮换</title>
+<style type="text/css">
+*{margin:0;padding:0;}
+body{background:#000000;text-align:center;}
+li{list-style:none;}
+#box{width:730px;height:454px;overflow:hidden;position:relative;}
+#left,#right{width:40px;height:100px;position:absolute;background:#CCCCCC;line-height:100px;top:50%;margin-top:-50px;font-size:40px;cursor:pointer;}
+#left{left:0;}
+#right{right:0;}
+
+.nav{position:absolute;bottom:10px;right:30px;width:200px;height:20px;}
+.nav ul{position:relative;}
+.nav ul li{float:left;width:20px;height:20px; border-radius:50%;margin-left:10px;cursor:pointer;}
+
+
+.active{background:#CC3399;}
+</style>
+<script src="jquery-2.2.0.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+   var timer;
+   var length=$("#images ul li").length;
+   var index=1;
+   $("#box").mouseover(function(){
+       $("#left,#right").css("display","block");
+   }).mouseout(function(){
+       $("#left,#right").css("display","none");
+   });
+   for(var i=0;i<$(".nav ul li").length;i++){
+      $(".nav ul li")[i].index=i;
+	  
+   }
+   $("#left").click(function(){
+       if(index<0){
+          index==5;
+       }  
+	   clearInterval(timer);
+	   index=index-2;
+	   imgMove();
+	   timer=setInterval(imgMove,4000);
+	   
+   })
+   $("#right").click(function(){
+       if(index==6){
+	      index=0;
+	   }
+	   clearInterval(timer);
+	   imgMove();
+	   timer=setInterval(imgMove,4000);
+   })
+   timer=setInterval(imgMove,4000);
+   
+       $(".nav ul li").mouseover(function(){
+	      index=this.index;	
+		  imgMove();	  
+	      clearInterval(timer);
+		  
+	   });
+	   $(".nav ul li").mouseout(function(){
+	      timer=setInterval(imgMove,4000);
+	   });
+  function  liAddClass(){
+        $(".nav ul li").eq(index).addClass("active").siblings().removeClass();
+  } 
+  function  imgMove(){
+        if(index<length){
+           $("#images ul li").eq(index).fadeIn("slow").siblings().fadeOut("slow");
+	       $(".nav ul li").eq(index).addClass("active").siblings().removeClass();
+		   index++;
+         }else{
+            index=0;
+         }
+   }
+});
+</script>
+</head>
+
+<body>
+<div id="box">
+    <div id="left"><span>&lt;</span></div>
+	
+	<div id="right"><span>&gt;</span></div>
+	<div id="images">
+	   <ul>
+	       <li><img src="1.jpg" /></li>
+		   <li><img src="2.jpg" /></li>
+		   <li><img src="3.jpg" /></li>
+		   <li><img src="4.jpg" /></li>
+		   <li><img src="5.jpg" /></li>
+		   <li><img src="6.jpg" /></li>
+	   </ul>
+	</div>
+	<div class="nav">
+	   <ul>
+	      <li class="active">1</li>
+		  <li>2</li>
+		  <li>3</li>
+		  <li>4</li>
+		  <li>5</li>
+		  <li>6</li>
+	   </ul>
+	</div>
+</div>
+</body>
+</html>
